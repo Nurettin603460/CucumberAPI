@@ -74,7 +74,15 @@ public class CommonAPI {
      Token.ı ise bize login fonksiyonun çalıştıran request.in response.u döndürüyor. Yani admin olarak
      kullancı adı ve şifre ile başarılı giriş yaptıktan sonra sistem tarafından
      -süreli olarak- otomatik şekilde bir TOKEN verilmektedir. Dolayısıyla bu class.ta kod yazmaya
-     ara verip bize token.ı döndürecek feature.ı yazmamız lazım. features.api.Post_Login.feature oluşturuyoruz. sonra içini dolduruyoruz.*/
+     ara verip bize token.ı döndürecek feature.ı yazmamız lazım. features.api.Post_Login.feature oluşturuyoruz. sonra içini dolduruyoruz.
+     StepDefinition olarak ise alttaki son 2 stepleri hazırlıyoruz:
+
+     (@Then("Login icin {string} ve {string} girilir.")
+      public void loginIcinVeGirilir(String email, String password) { ...
+
+       @Then("Login icin Post request gonderilir.")
+    public void loginIcinPostRequestGonderilir() {
+     */
 
     @Then("AllCountries icin Get request gonderilir.")
     public void all_countries_icin_get_request_gonderilir() {
@@ -95,6 +103,8 @@ public class CommonAPI {
     @Then("Login icin {string} ve {string} girilir.")
     public void loginIcinVeGirilir(String email, String password) {
 
+         // 2 satır için POJO oluşturmaya gerek yok. O yüzden JsonObjesi hazırlıyoruz.
+
         /*
         {
           "email": "test@test.com",
@@ -102,7 +112,7 @@ public class CommonAPI {
         }
          */
 
-        reqBody = new JSONObject();
+        reqBody = new JSONObject(); // reqBody.yi response oluştururken de kullanacağımız için bunu class.level seviyesinde tanınmlamamız lazım.
 
         reqBody.put("email", ConfigReader.getProperty(email));
         reqBody.put("password", ConfigReader.getProperty(password));
@@ -115,13 +125,16 @@ public class CommonAPI {
         Response response = given()
                                 .spec(spec)
                                 .contentType(ContentType.JSON)
-                                .header("Accept","application/json")
+                                .header("Accept","application/json") // API bu header değerini de zorunlu tutmaktadır.
                             .when()
                                 .body(reqBody.toString())
                                 .post(fullPath);
 
         response.prettyPrint();
-
-
     }
+    // Bu aşamadan sonra testimiz her çalıştığında bize token.i getirecek bir class ve bunun içinde bir metod oluşturacağız.
+    // utulities altına Authentication class.ı oluşturacağız. Burada bize token döndürecek metodu HooksAPI içinden
+    // -spec.te olduğu gibi- @Before içine yazacağız.
+
+
 }
