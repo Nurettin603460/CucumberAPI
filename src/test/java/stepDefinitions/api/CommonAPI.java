@@ -25,12 +25,15 @@ public class CommonAPI {
 
         // https://trendlifebuy.com/api/profile/allCountries
 
-        // spec.pathParams("pp1","api","pp2","profile","pp3","allCountries");
+        // spec.pathParams("pp1","api","pp2","profile","pp3","allCountries"); Normalde böyle yazıyorduk. Bu kısmı dinamik yapacağız.
+            // bunun için slash ile ayırıp her path.i array.a atayacağız.
 
-        String [] paths = rawPaths.split("/"); // ["api","profile","allCountries"]
+        String [] paths = rawPaths.split("/"); // ["api","profile","allCountries"] //Burada sadece pathParams.ları ayırdı. Çünkü buraya BaseUrl girilmedi.
+            // baseUrl spec olarak ayırca daha önce girilmişti zaten.
 
         System.out.println(Arrays.toString(paths));
-       /*
+        /*  --> spec.pathParams("pp1","api","pp2","profile","pp3","allCountries"); burada tek satırda yaptığımız şeyi aşağıda ayrı ayrı da yapabiliriz. ikisi
+                aynı sonuca ulaştırır:
         spec.pathParam("pp1","api");
         spec.pathParam("pp2","profile");
         spec.pathParam("pp3","allCountries");
