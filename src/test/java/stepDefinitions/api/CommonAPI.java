@@ -40,6 +40,10 @@ public class CommonAPI {
         */
 
         StringBuilder tempPath = new StringBuilder("/{");
+        // Burada response oluştururken kullanacağımız get("/{pp1}{{pp2}/{pp3}") için format hazırlığı yapmış oluyoruz.
+        // for loop ile de içeriği doldurulacak.
+        // StringBuilder sayesinde append ile kullanımında ard arda veriler eklenebiliyor. Diğer bir özelliği de
+        //      bir başlangıç değeri koyabiliyoruz. O yüzden dataType olarak StringBuilder kullanılmıştır.
 
 
         for (int i = 0; i < paths.length; i++) {
@@ -47,16 +51,31 @@ public class CommonAPI {
             String key = "pp" + i;
             String value = paths[i].trim();
 
-            HooksAPI.spec.pathParam(key,value);
+            HooksAPI.spec.pathParam(key,value); // spec.i HooksAPI.de static olarak tanımladığımız için burada çağırabiliyouruz.
+            // Böylece her döngüde bir adet pathParam oluşturacak: spec.pathParam("pp1",value) şeklinde.
+
 
             tempPath.append(key + "}/{");
         }
+            // Döngü bittiğinde tempPath şu şekilde olacaktır: tempPath.get("/{pp1}{{pp2}/{pp3}/{") şeklinde olacaktır.
+                // Ancak sondaki iki karakter her zaman fazlalık olacaktır. O yüzden bunları silelim:
+
             tempPath.deleteCharAt(tempPath.lastIndexOf("{"));
             tempPath.deleteCharAt(tempPath.lastIndexOf("/"));
 
+        //Son halini sitring bir fullPath olarak kaydedelim. Ancak bunu classLevel seviyesinde tanımlamamız lazım ki class içinde
+        // kullanmamız gereken yerde de kullanabilelim.
+        // Stringbuilder olarak oluşturulan variable.ı stringe dönüştürmek için toString kullanmalıyız:
             fullPath = tempPath.toString();
         System.out.println("fullPath = " + fullPath);
     }
+
+    /*Aşağıdaki işlemleri admin olarak yapabilmemiz için token.e ihtiyaç var. (admin olduğumuzun ispatı için)
+     Token.ı ise bize login fonksiyonun çalıştıran request.in response.u döndürüyor. Yani admin olarak
+     kullancı adı ve şifre ile başarılı giriş yaptıktan sonra sistem tarafından
+     -süreli olarak- otomatik şekilde bir TOKEN verilmektedir. Dolayısıyla bu class.ta kod yazmaya
+     ara verip bize token.ı döndürecek feature.ı yazmamız lazım. features.api.Post_Login.feature oluşturuyoruz. sonra içini dolduruyoruz.*/
+
     @Then("AllCountries icin Get request gonderilir.")
     public void all_countries_icin_get_request_gonderilir() {
 
