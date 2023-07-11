@@ -87,11 +87,19 @@ public class CommonAPI {
     @Then("AllCountries icin Get request gonderilir.")
     public void all_countries_icin_get_request_gonderilir() {
 
+        // Artık token.e ulaşabildiğimiz için işlemlerimize kaldığımız yerden devam edebiliriz.
+        // API dökümanına baktığımızda (postman) endpoint, get metodu ve
+            // header değerlerine (Content-Type ve Accept) ihtiyaç var. Body yok, parametre yok.
+
+        // Ancak "getAllCountries" API; sadece admin için tanımlanmış bir API olduğu için bizim admin olarak
+        // giriş yaptığımızın ispatı olarak daha önceden oluşturulan TOKEN.i yazmamız lazım. Token.i yazmazsak
+            // bu metod bize bir sonuç döndürmeyecektir. tken ise bir header değeridir: header(key, value)
+
         Response response = given()
                                 .spec(spec)
                                 .contentType(ContentType.JSON)
                                 .header("Accept","application/json")
-                                .headers("Authorization","Bearer " + HooksAPI.token)
+                                .headers("Authorization","Bearer " + HooksAPI.token) //postman.den bakılarak olduğu gibi yazıldı
                             .when()
                                 .get(fullPath);
 

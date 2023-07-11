@@ -49,12 +49,15 @@ public class Authentication {
 
         JsonPath resJP = response.jsonPath();
 
-        String token=resJP.getString("token");
+        //4.Aşama: resJP.den token.ı çağırma ve bu değeri kaydetme:
+
+        String token=resJP.getString("token"); //sadece get de yazılabilir.
 
         return token;
     }
 
-
+    // Bu oluşturduğumuz token oluşturma metonu, test her çalıştığında öncesinden otomatik hazırlaması için HooksAPI
+    // class.ına gidip bu metodu çağıracak bir metod oluşturacağız.
 
 
 
